@@ -9,8 +9,16 @@ describe("Shul", () => {
     sequelize.sync({force: true}).then((res) => {
 
       Shul.create({
-        title: "Test Shul",
-        body: "This Shul is a test",
+        name: "Test Shul",
+        nussach: "Ashkenaz",
+        denom: "MO",
+        country: "United States",
+        region: "New Jersey",
+        city: "Teaneck",
+        femLead: 0,
+        kaddishWithMen: 1,
+        kaddishAlone: 3,
+        childcare: 2,
       })
       .then((shul) => {
         this.shul = shul;
@@ -24,16 +32,30 @@ describe("Shul", () => {
   });
 
   describe("#create()", () => {
-    it("should create a shul object with a title and body and associated user", (done) => {
-
+    it("should create a shul object with relevant details", (done) => {
       Shul.create({
-        title: "Create() test shul",
-        body: "This shul will test the create() method.",
+        name: "Test Shul 1",
+        nussach: "Ashkenaz",
+        denom: "MO",
+        country: "United States",
+        region: "New Jersey",
+        city: "Teaneck",
+        femLead: 0,
+        kaddishWithMen: 1,
+        kaddishAlone: 3,
+        childcare: 2,
       })
       .then((shul) => {
-        expect(shul.title).toBe("Create() test shul");
-        expect(shul.body).toBe("This shul will test the create() method.");
-        expect(shul.private).toBe(false);
+        expect(shul.name).toBe("Test Shul 1");
+        expect(shul.nussach).toBe("Ashkenaz");
+        expect(shul.denom).toBe("MO");
+        expect(shul.country).toBe("United States");
+        expect(shul.region).toBe("New Jersey");
+        expect(shul.city).toBe("Teaneck");
+        expect(shul.femLead).toBe(0);
+        expect(shul.kaddishWithMen).toBe(1);
+        expect(shul.kaddishAlone).toBe(3);
+        expect(shul.childcare).toBe(2);
         done();
       })
       .catch((err) => {
@@ -42,16 +64,16 @@ describe("Shul", () => {
       });
     });
 
-    it("should not create a shul with missing title, body or assigned user", (done) => {
+    it("should not create a shul with missing info", (done) => {
       Shul.create({
-        title:"this shul only has a title"
+        name:"this shul only has a name"
       })
       .then((shul) => {
         //validation error will skip this
         done();
       })
       .catch((err) => {
-        expect(err.message).toContain("Shul.body cannot be null");
+        expect(err.message).toContain("Shul.nussach cannot be null");
         done();
       });
     });

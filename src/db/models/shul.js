@@ -1,18 +1,45 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Shul = sequelize.define('Shul', {
-    title: {
+    name: {
       allowNull: false,
       type: DataTypes.STRING
     },
-    body: {
+    nussach: {
       allowNull: false,
-      type: DataTypes.TEXT
+      type: DataTypes.STRING
     },
-    private: {
-      type: DataTypes.BOOLEAN,
+    denom: {
       allowNull: false,
-      defaultValue: false
+      type: DataTypes.STRING
+    },
+    country: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    region: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    city: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    femLead: {
+      allowNull: false,
+      type: DataTypes.INTEGER
+    },
+    kaddishWithMen: {
+      allowNull: false,
+      type: DataTypes.INTEGER
+    },
+    kaddishAlone: {
+      allowNull: false,
+      type: DataTypes.INTEGER
+    },
+    childcare: {
+      allowNull: false,
+      type: DataTypes.INTEGER
     },
   }, {});
   Shul.associate = function(models) {
