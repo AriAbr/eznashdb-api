@@ -1,0 +1,41 @@
+{
+  "development": {
+    "username": "root",
+    "password": null,
+    "database": "dev",
+    "host": "0.0.0.0",
+    "dialect": "postgres",
+    "logging": false,
+    "operatorsAliases": 0,
+    "use_env_variable": "DEV_DATABASE_URL",
+    "dialectOptions": {
+      "ssl": true
+    }
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "test",
+    "host": "0.0.0.0",
+    "dialect": "postgres",
+    "logging": false,
+    "operatorsAliases": 0,
+    "use_env_variable": "TEST_DATABASE_URL",
+    "dialectOptions": {
+      "ssl": true
+    }
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "prod",
+    "host": "0.0.0.0",
+    "dialect": "postgres",
+    "logging": false,
+    "operatorsAliases": 0,
+    "use_env_variable": "PROD_DATABASE_URL",
+    "dialectOptions": {
+      "ssl": true
+    }
+  }
+}
