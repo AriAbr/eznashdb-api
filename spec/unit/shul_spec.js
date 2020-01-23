@@ -64,6 +64,38 @@ describe("Shul", () => {
       });
     });
 
+    it("should create a shul object with hebrew inputs", (done) => {
+      Shul.create({
+        name: "בית כנסת 1",
+        nussach: "Ashkenaz",
+        denom: "MO",
+        country: "United States",
+        region: "New Jersey",
+        city: "Teaneck",
+        femLead: 0,
+        kaddishWithMen: 1,
+        kaddishAlone: 3,
+        childcare: 2,
+      })
+      .then((shul) => {
+        expect(shul.name).toBe("בית כנסת 1");
+        expect(shul.nussach).toBe("Ashkenaz");
+        expect(shul.denom).toBe("MO");
+        expect(shul.country).toBe("United States");
+        expect(shul.region).toBe("New Jersey");
+        expect(shul.city).toBe("Teaneck");
+        expect(shul.femLead).toBe(0);
+        expect(shul.kaddishWithMen).toBe(1);
+        expect(shul.kaddishAlone).toBe(3);
+        expect(shul.childcare).toBe(2);
+        done();
+      })
+      .catch((err) => {
+        console.log();
+        done();
+      });
+    });
+
     it("should not create a shul with missing info", (done) => {
       Shul.create({
         name:"this shul only has a name"
