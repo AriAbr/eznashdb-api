@@ -44,7 +44,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Shul.associate = function(models) {
     // associations can be defined here
-
+    Shul.hasMany(models.Room, {
+      foreignKey: "shulId",
+      as: "rooms",
+    });
   };
   return Shul;
 };

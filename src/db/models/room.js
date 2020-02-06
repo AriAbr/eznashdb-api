@@ -1,6 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Room = sequelize.define('Room', {
+    shulId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     name: {
       allowNull: false,
       type: DataTypes.STRING
@@ -52,7 +56,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Room.associate = function(models) {
     // associations can be defined here
-
+    Room.belongsTo(models.Shul, {
+      foreignKey: "shulId",
+      onDelete: "CASCADE"
+    });
   };
   return Room;
 };
