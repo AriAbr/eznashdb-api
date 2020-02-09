@@ -32,9 +32,9 @@ module.exports = {
       };
       shulQueries.addShul(newShul, (err, shul) => {
         if (err) {
-          res.redirect (500, "/addShul");
+          res.status(500).send(err)
         } else {
-          res.redirect (303, `/addShul`);
+          res.send (shul);
         }
       });
     // } else {

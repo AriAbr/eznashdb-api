@@ -96,7 +96,7 @@ describe("routes : shuls", () => {
           (err, res, body) => {
             Shul.findOne({where: {name: "Created Shul 1"}})
             .then((shul) =>{
-              expect(res.statusCode).toBe(303);
+              expect(res.statusCode).toBe(200);
               expect(shul.name).toBe("Created Shul 1");
               expect(shul.city).toBe("Teaneck");
               done();
@@ -128,7 +128,7 @@ describe("routes : shuls", () => {
         request.post(options,
           (err, res, body) => {
 
-            Shul.findOne({where: {title: "Created Shul 2"}})
+            Shul.findOne({where: {name: "Created Shul 2"}})
             .then((shul) => {
               expect(shul).toBeNull();
               done();
