@@ -59,7 +59,7 @@ describe("routes : shuls", () => {
     //   });
     // });
 
-    describe("POST /shuls/getAll", () => {
+    describe("GET /shuls/getAll", () => {
 
       it("should return a status code of 200 and all shuls", (done) => {
         request.get(`${base}getAll`, (err, res, body) => {
@@ -71,6 +71,98 @@ describe("routes : shuls", () => {
         });
       });
 
+    });
+
+    describe("POST /shuls/create", () => {
+      const options = {
+        url: `${base}create`,
+        form: {
+          name: "Created Shul 1",
+          nussach: "Ashkenaz",
+          denom: "MO",
+          country: "United States",
+          region: "New Jersey",
+          city: "Teaneck",
+          femLead: 0,
+          kaddishWithMen: 1,
+          kaddishAlone: 3,
+          childcare: 2,
+        }
+      };
+
+      it("should return a status code of 200 and create a new shul", (done) => {
+        request.post(options,
+
+          (err, res, body) => {
+            Shul.findOne({where: {name: "Created Shul 1"}})
+            .then((shul) =>{
+              expect(res.statusCode).toBe(303);
+              expect(shul.name).toBe("Created Shul 1");
+              expect(shul.city).toBe("Teaneck");
+              done();
+            })
+            .catch((err) => {
+              console.log(err);
+              done();
+            })
+          }
+        );
+      });
+
+      it("should not create a new shul with missing fields", (done) => {
+        const options = {
+          url: `${base}create`,
+          form: { // leaving out childcare field
+            name: "Created Shul 2",
+            nussach: "Ashkenaz",
+            denom: "MO",
+            country: "United States",
+            region: "New Jersey",
+            city: "Teaneck",
+            femLead: 0,
+            kaddishWithMen: 1,
+            kaddishAlone: 3,
+          }
+        };
+
+        request.post(options,
+          (err, res, body) => {
+
+            Shul.findOne({where: {title: "Created Shul 2"}})
+            .then((shul) => {
+              expect(shul).toBeNull();
+              done();
+            })
+            .catch((err) => {
+              console.log(err);
+              done();
+            })
+          })
+      })
+
+      // it("should not create a new shul that fails validation", (done) => {
+      //   const options = {
+      //     url: `${base}create`,
+      //     form: {
+      //       title: "a",
+      //       description: "b"
+      //     }
+      //   };
+
+      //   request.post(options,
+      //     (err, res, body) => {
+
+      //       Shul.findOne({where: {title: "a"}})
+      //       .then((shul) => {
+      //         expect(shul).toBeNull();
+      //         done();
+      //       })
+      //       .catch((err) => {
+      //         console.log(err);
+      //         done();
+      //       })
+      //     })
+      // })
     });
 
   });

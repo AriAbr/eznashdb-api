@@ -6,4 +6,6 @@ const shulController = require("../controllers/shulController");
 
 router.get("/getAll", shulController.getAll);
 
+router.post("/create", shulController.create);
+
 module.exports = router;
