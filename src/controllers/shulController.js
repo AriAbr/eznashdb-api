@@ -1,4 +1,7 @@
+const Shul = require("../db/models").Shul;
+const Room = require("../db/models").Room;
 const shulQueries = require("../db/queries/shulQueries.js");
+const roomQueries = require("../db/queries/roomQueries.js");
 // const Authorizer = require("../policies/shul");
 
 
@@ -31,10 +34,36 @@ module.exports = {
         childcare: req.body.childcare,
       };
       shulQueries.addShul(newShul, (err, shul) => {
+        hasErrored = false;
         if (err) {
+          hasErrored = true
           res.status(500).send(err)
         } else {
-          res.send (shul);
+          //add rooms
+          rooms = [];
+          req.body.rooms.map((room, key) => {
+            room.shulId = shul.id;
+            roomQueries.addRoom(room, (err, room) => {
+              if(err) {
+                hasErrored = true;
+                res.status(500).send(err)
+              } else {
+                rooms.push(room.dataValues)
+                if(key+1 === req.body.rooms.length && !hasErrored) { // is last room and no errors
+                  //get shul with rooms and send it back
+                  Shul.findOne({
+                    where: {id: shul.id},
+                    include: [
+                      {model: Room, as: "rooms"}
+                    ]
+                  }).then((shulWithRooms) => {
+                    res.send (shulWithRooms);
+                  })
+                }
+              }
+            })
+
+          })
         }
       });
     // } else {

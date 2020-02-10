@@ -1,11 +1,16 @@
 const Shul = require("../models").Shul;
+const Room = require("../models").Room;
 // const Authorizer = require("../policies/topic");
 
 
 module.exports = {
 
   getAllShuls(callback){
-    return Shul.findAll()
+    return Shul.findAll({
+      include: [
+        {model: Room, as: "rooms"}
+      ]
+    })
     .then((shuls) => {
       callback(null, shuls);
     })
