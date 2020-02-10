@@ -35,4 +35,27 @@ module.exports = {
     })
   },
 
+  deleteShul(req, callback){
+    const shulId = req.body.id
+
+    return Shul.findOne({where: {id: shulId}}) // Shull.findById() is not working here for some reason
+    .then((shul) => {
+
+      // const authorized = new Authorizer(req.user, shul).destroy();
+
+      // if(authorized){
+
+        shul.destroy()
+        .then((res) => {
+          callback(null, shul);
+        });
+      // } else {
+      //   req.flash("notice", "You are not authorized to do that.")
+      //   callback(401);
+      // }
+    })
+    .catch((err) => {
+      callback(err);
+    })
+  },
 }

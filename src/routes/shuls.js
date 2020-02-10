@@ -8,4 +8,6 @@ router.get("/getAll", shulController.getAll);
 
 router.post("/create", shulController.create);
 
+router.post("/destroy", shulController.destroy);
+
 module.exports = router;

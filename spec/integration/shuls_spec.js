@@ -165,5 +165,33 @@ describe("routes : shuls", () => {
       // })
     });
 
+    describe("POST /shuls/destroy", () => {
+
+      it("should delete the topic with the associated ID", (done) => {
+        const id = this.shul.id;
+        const options = {
+          url: `${base}destroy`,
+          form: {
+            id: id,
+          }
+        };
+
+        Shul.findAll()
+        .then((shuls) => {
+          const shulCountBeforeDelete = shuls.length;
+          expect(shulCountBeforeDelete).toBe(1);
+          request.post(options, (err, res, body) => {
+            expect(JSON.parse(res.body).id).toBe(id);
+            Shul.findAll()
+            .then((shuls) => {
+              expect(err).toBeNull();
+              expect(shuls.length).toBe(shulCountBeforeDelete - 1);
+              done();
+            })
+          })
+        })
+      });
+    });
+
   });
 });
