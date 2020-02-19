@@ -17,6 +17,21 @@ module.exports = {
     })
   },
 
+  getByLocation(req, res, next){
+    let locationData = {
+      city: req.body.city,
+      region: req.body.region,
+      country: req.body.country
+    }
+    shulQueries.getShulsByLocation(locationData, (err, shuls) => {
+      if (err){
+        res.send(err);
+      } else {
+        res.send(shuls);
+      }
+    })
+  },
+
   getMapData(req, res, next){
     shulQueries.getAllShuls((err, shuls) => {
       if (err){

@@ -17,7 +17,7 @@ describe("routes : shuls", () => {
         name: "Integration Test Shul 1",
         nussach: "Ashkenaz",
         denom: "MO",
-        country: "United States",
+        country: "US",
         region: "New Jersey",
         city: "Teaneck",
         femLead: 0,
@@ -103,7 +103,7 @@ describe("routes : shuls", () => {
           name: "Created Shul 1",
           nussach: "Ashkenaz",
           denom: "MO",
-          country: "United States",
+          country: "US",
           region: "New Jersey",
           city: "Teaneck",
           femLead: 0,
@@ -159,7 +159,7 @@ describe("routes : shuls", () => {
             name: "Created Shul 2",
             nussach: "Ashkenaz",
             denom: "MO",
-            country: "United States",
+            country: "US",
             region: "New Jersey",
             city: "Teaneck",
             femLead: 0,
@@ -190,7 +190,7 @@ describe("routes : shuls", () => {
             name: "Created Shul 1",
             nussach: "Ashkenaz",
             denom: "MO",
-            country: "United States",
+            country: "US",
             region: "New Jersey",
             city: "Teaneck",
             femLead: 0,
@@ -314,7 +314,31 @@ describe("routes : shuls", () => {
           var mapData = JSON.parse(res.body)
           expect(res.statusCode).toBe(200);
           expect(err).toBeNull();
-          expect(mapData["Teaneck, New Jersey, United States"].shulCount).toBe(1);
+          expect(mapData["Teaneck, New Jersey, US"].shulCount).toBe(1);
+          done();
+        });
+      });
+
+    });
+
+    describe("POST /shuls/searchByLocation", () => {
+
+      it("should return a status code of 200 and all shuls in the location", (done) => {
+        const options = {
+          url: `${base}searchByLocation`,
+          form: {
+            country: "US",
+            region: "New Jersey",
+            city: "Teaneck",
+          }
+        };
+        request.post(options, (err, res, body) => {
+
+          var shulData = JSON.parse(res.body)
+          expect(res.statusCode).toBe(200);
+          expect(err).toBeNull();
+          expect(shulData.length).toBe(1);
+          expect(shulData[0].name).toBe("Integration Test Shul 1");
           done();
         });
       });

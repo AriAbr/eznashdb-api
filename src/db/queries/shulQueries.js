@@ -19,6 +19,25 @@ module.exports = {
     })
   },
 
+  getShulsByLocation(locationData, callback){
+    return Shul.findAll({
+      where: {
+        city: locationData.city,
+        region: locationData.region,
+        country: locationData.country,
+      },
+      include: [
+        {model: Room, as: "rooms"}
+      ]
+    })
+    .then((shuls) => {
+      callback(null, shuls);
+    })
+    .catch((err) => {
+      callback(err);
+    })
+  },
+
   addShul(newShul, callback){
     return Shul.create({
       name: newShul.name,

@@ -12,4 +12,6 @@ router.post("/destroy", shulController.destroy);
 
 router.get("/getMapData", shulController.getMapData);
 
+router.post("/searchByLocation", shulController.getByLocation);
+
 module.exports = router;
