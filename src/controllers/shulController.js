@@ -17,6 +17,43 @@ module.exports = {
     })
   },
 
+  getMapData(req, res, next){
+    shulQueries.getAllShuls((err, shuls) => {
+      if (err){
+        res.send(err);
+      } else {
+        var mapData = {};
+
+        for(let i = 0; i < shuls.length; i++){
+          var currShul = shuls[i];
+          var locationNameArr = [];
+          if(currShul.city !== "N/A"){
+            locationNameArr.push(currShul.city);
+          }
+          if(currShul.region !== "N/A" && currShul.country !== "IL"){
+            locationNameArr.push(currShul.region);
+          }
+          if(currShul.country !== "N/A"){
+            locationNameArr.push(currShul.country);
+          }
+          var locationName = locationNameArr.join(", ")
+
+          if(!mapData[locationName]){
+            mapData[locationName] = {
+              shulCount: 0,
+              city: currShul.city,
+              region: currShul.region,
+              countryCode: currShul.country,
+            }
+          }
+          mapData[locationName].shulCount++;
+          mapData[locationName].locationName = locationName;
+        }
+        res.send(mapData);
+      }
+    })
+  },
+
   create(req, res, next){
     // const authorized = new Authorizer(req.user).create();
 

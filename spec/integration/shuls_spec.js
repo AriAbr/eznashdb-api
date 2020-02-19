@@ -282,4 +282,44 @@ describe("routes : shuls", () => {
     });
 
   });
+
+  describe("user performing map actions", () => {
+
+    // beforeEach((done) => { //mock authenticate as admin user
+    //   User.create({
+    //     email: "admin@example.com",
+    //     password: "123456",
+    //     role: "admin"
+    //   })
+    //   .then((user) => {
+    //     request.get({ //mock authentication
+    //       url: "http://localhost:3000/auth/fake",
+    //       form: {
+    //         role: user.role,
+    //         userId: user.id,
+    //         email: user.email
+    //       }
+    //     },
+    //       (err, res, body) => {
+    //         done();
+    //       }
+    //     );
+    //   });
+    // });
+
+    describe("GET /shuls/getMapData", () => {
+
+      it("should return a status code of 200 and map data for all shuls", (done) => {
+        request.get(`${base}getMapData`, (err, res, body) => {
+          var mapData = JSON.parse(res.body)
+          expect(res.statusCode).toBe(200);
+          expect(err).toBeNull();
+          expect(mapData["Teaneck, New Jersey, United States"].shulCount).toBe(1);
+          done();
+        });
+      });
+
+    });
+
+  });
 });

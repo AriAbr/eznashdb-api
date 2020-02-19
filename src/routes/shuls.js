@@ -10,4 +10,6 @@ router.post("/create", shulController.create);
 
 router.post("/destroy", shulController.destroy);
 
+router.get("/getMapData", shulController.getMapData);
+
 module.exports = router;
