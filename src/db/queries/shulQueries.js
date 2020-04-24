@@ -38,6 +38,31 @@ module.exports = {
     })
   },
 
+  getShulsByParams(params, callback){
+    var queryConditions = {};
+    var yesNoInputs = ["femLead", "kaddishWithMen", "kaddishAlone", "childcare"];
+    for(let i = 0; i < yesNoInputs.length; i++){
+      var currKey = yesNoInputs[i];
+      if(params[currKey]){
+        var inputArr = params[currKey].split(" ").map(stringedNum=>parseInt(stringedNum));
+        queryConditions[currKey] = inputArr;
+      }
+    }
+
+    return Shul.findAll({
+      where: queryConditions,
+      include: [
+        {model: Room, as: "rooms"}
+      ]
+    })
+    .then((shuls) => {
+      callback(null, shuls);
+    })
+    .catch((err) => {
+      callback(err);
+    })
+  },
+
   addShul(newShul, callback){
     return Shul.create({
       name: newShul.name,

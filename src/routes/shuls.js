@@ -14,4 +14,6 @@ router.get("/getMapData", shulController.getMapData);
 
 router.post("/searchByLocation", shulController.getByLocation);
 
+router.post("/searchByParams", shulController.getByParams);
+
 module.exports = router;

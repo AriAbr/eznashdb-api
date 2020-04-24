@@ -32,6 +32,22 @@ module.exports = {
     })
   },
 
+  getByParams(req, res, next){
+    let params = {
+      femLead: req.body.femLead,
+      kaddishAlone: req.body.kaddishAlone,
+      kaddishWithMen: req.body.kaddishWithMen,
+      childcare: req.body.childcare
+    }
+    shulQueries.getShulsByParams(params, (err, shuls) => {
+      if (err){
+        res.send(err);
+      } else {
+        res.send(shuls);
+      }
+    })
+  },
+
   getMapData(req, res, next){
     shulQueries.getAllShuls((err, shuls) => {
       if (err){

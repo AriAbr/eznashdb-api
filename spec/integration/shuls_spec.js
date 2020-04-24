@@ -345,5 +345,60 @@ describe("routes : shuls", () => {
 
     });
 
+    describe("POST /shuls/searchByParams", () => {
+
+      it("should return a status code of 200 and all shuls that meet the parameters", (done) => {
+
+        Shul.create({
+          name: "Fem Lead Shul",
+          nussach: "Ashkenaz",
+          denom: "MO",
+          country: "US",
+          region: "New Jersey",
+          city: "Teaneck",
+          femLead: 1,
+          kaddishWithMen: 1,
+          kaddishAlone: 3,
+          childcare: 2,
+          rooms: [{
+            name: "Fem Lead Room 1",
+            size: 2,
+            isCentered: true,
+            isSameFloorSide: true,
+            isSameFloorBack: false,
+            isSameFloorElevated: false,
+            isSameFloorLevel: true,
+            isBalconySide: false,
+            isBalconyBack: false,
+            isOnlyMen: false,
+            isMixedSeating: false,
+            visAudScore: 3,
+          }]
+        }, {
+          include: {
+            model: Room,
+            as: "rooms"
+          }
+        })
+
+        const options = {
+          url: `${base}searchByParams`,
+          form: {
+            femLead: '1',
+            kaddishAlone: '3'
+          }
+        };
+        request.post(options, (err, res, body) => {
+          var shulData = JSON.parse(res.body)
+          expect(res.statusCode).toBe(200);
+          expect(err).toBeNull();
+          expect(shulData.length).toBe(1);
+          expect(shulData[0].name).toBe("Fem Lead Shul");
+          done();
+        });
+      });
+
+    });
+
   });
 });
