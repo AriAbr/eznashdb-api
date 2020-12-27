@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "test": "set NODE_ENV=test && jasmine",
+    "test-w": "nodemon -L --exec 'npm test'",
     "seed": "npx sequelize-cli db:seed:all"
   },
   "dependencies": {
@@ -26,6 +27,7 @@
   "devDependencies": {
     "faker": "^4.1.0",
     "jasmine": "^3.5.0",
+    "nodemon": "^2.0.6",
     "request": "^2.88.0"
   }
 }
