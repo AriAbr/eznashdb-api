@@ -7,7 +7,7 @@ const sequelize = require("../../src/db/models/index").sequelize;
 const Shul = require("../../src/db/models").Shul;
 const Room = require("../../src/db/models").Room;
 
-const {createShul} = require("../utils");
+const {createShul, getShulData, getRoomData} = require("../utils");
 
 describe("routes : shuls", () => {
 
@@ -42,36 +42,18 @@ describe("routes : shuls", () => {
     });
 
     describe("POST /shuls/create", () => {
+
       const options = {
         url: `${base}create`,
         json: true,
         method: 'post',
-        body: {
+        body: getShulData({
           name: "Created Shul 1",
-          nussach: "Ashkenaz",
-          denom: "MO",
-          country: "US",
-          region: "New Jersey",
-          city: "Teaneck",
-          femLead: 0,
-          kaddishWithMen: 1,
-          kaddishAlone: 3,
-          childcare: 2,
-          rooms: [{
-            name: "Created Room 1",
-            size: 2,
-            isCentered: true,
-            isSameFloorSide: true,
-            isSameFloorBack: false,
-            isSameFloorElevated: false,
-            isSameFloorLevel: true,
-            isBalconySide: false,
-            isBalconyBack: false,
-            isOnlyMen: false,
-            isMixedSeating: false,
-            visAudScore: 3,
-          }]
-        }
+          rooms: [
+            getRoomData({
+              name: "Created Room 1"
+            })
+          ]}),
       };
 
       it("should return a status code of 200 and create a new shul", (done) => {
@@ -100,19 +82,12 @@ describe("routes : shuls", () => {
       });
 
       it("should not create a new shul with missing fields", (done) => {
+
+        var shulData = getShulData({name: "Created Shul 2"})
+        delete shulData.childcare
         const options = {
           url: `${base}create`,
-          form: { // leaving out childcare field
-            name: "Created Shul 2",
-            nussach: "Ashkenaz",
-            denom: "MO",
-            country: "US",
-            region: "New Jersey",
-            city: "Teaneck",
-            femLead: 0,
-            kaddishWithMen: 1,
-            kaddishAlone: 3,
-          }
+          form: shulData,
         };
 
         request.post(options, (err, res, body) => {
@@ -129,35 +104,16 @@ describe("routes : shuls", () => {
       })
 
       it("should not create a new room with missing fields", (done) => {
+        var roomData = getRoomData({ name: "Room with no vis/aud" })
+        delete roomData.visAudScore
         const options = {
           url: `${base}create`,
           json: true,
           method: 'post',
-          body: {
+          body: getShulData({
             name: "Created Shul 1",
-            nussach: "Ashkenaz",
-            denom: "MO",
-            country: "US",
-            region: "New Jersey",
-            city: "Teaneck",
-            femLead: 0,
-            kaddishWithMen: 1,
-            kaddishAlone: 3,
-            childcare: 2,
-            rooms: [{ //leaving out visAudScore
-              name: "Room with no vis/aud",
-              size: 2,
-              isCentered: true,
-              isSameFloorSide: true,
-              isSameFloorBack: false,
-              isSameFloorElevated: false,
-              isSameFloorLevel: true,
-              isBalconySide: false,
-              isBalconyBack: false,
-              isOnlyMen: false,
-              isMixedSeating: false,
-            }]
-          }
+            rooms: [roomData]
+          }),
         };
 
         request(options,
