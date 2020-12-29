@@ -7,44 +7,13 @@ const sequelize = require("../../src/db/models/index").sequelize;
 const Shul = require("../../src/db/models").Shul;
 const Room = require("../../src/db/models").Room;
 
+const {createShul} = require("../utils");
+
 describe("routes : shuls", () => {
 
   beforeEach((done) => {
-    this.shul;
     sequelize.sync({force : true}).then((res) => {
-
-      Shul.create({
-        name: "Integration Test Shul 1",
-        nussach: "Ashkenaz",
-        denom: "MO",
-        country: "US",
-        region: "New Jersey",
-        city: "Teaneck",
-        femLead: 0,
-        kaddishWithMen: 1,
-        kaddishAlone: 3,
-        childcare: 2,
-        rooms: [{
-          name: "Test Room 1",
-          size: 2,
-          isCentered: true,
-          isSameFloorSide: true,
-          isSameFloorBack: false,
-          isSameFloorElevated: false,
-          isSameFloorLevel: true,
-          isBalconySide: false,
-          isBalconyBack: false,
-          isOnlyMen: false,
-          isMixedSeating: false,
-          visAudScore: 3,
-        }]
-      }, {
-        include: {
-          model: Room,
-          as: "rooms"
-        }
-      })
-      .then((shul) => {
+      createShul().then((shul) => {
         this.shul = shul;
         this.room = shul.rooms[0]
         done();
@@ -58,28 +27,6 @@ describe("routes : shuls", () => {
 
   describe("user performing CRUD actions for Shul", () => {
 
-    // beforeEach((done) => { //mock authenticate as admin user
-    //   User.create({
-    //     email: "admin@example.com",
-    //     password: "123456",
-    //     role: "admin"
-    //   })
-    //   .then((user) => {
-    //     request.get({ //mock authentication
-    //       url: "http://localhost:3000/auth/fake",
-    //       form: {
-    //         role: user.role,
-    //         userId: user.id,
-    //         email: user.email
-    //       }
-    //     },
-    //       (err, res, body) => {
-    //         done();
-    //       }
-    //     );
-    //   });
-    // });
-
     describe("GET /shuls/getAll", () => {
 
       it("should return a status code of 200 and all shuls", (done) => {
@@ -87,7 +34,7 @@ describe("routes : shuls", () => {
           var shuls = JSON.parse(res.body)
           expect(res.statusCode).toBe(200);
           expect(err).toBeNull();
-          expect(shuls[0].name).toBe("Integration Test Shul 1");
+          expect(shuls[0].name).toBe("Test Shul");
           done();
         });
       });
@@ -338,7 +285,7 @@ describe("routes : shuls", () => {
           expect(res.statusCode).toBe(200);
           expect(err).toBeNull();
           expect(shulData.length).toBe(1);
-          expect(shulData[0].name).toBe("Integration Test Shul 1");
+          expect(shulData[0].name).toBe("Test Shul");
           done();
         });
       });
@@ -348,39 +295,7 @@ describe("routes : shuls", () => {
     describe("POST /shuls/searchByParams", () => {
 
       it("should return a status code of 200 and all shuls that meet the parameters", (done) => {
-
-        Shul.create({
-          name: "Fem Lead Shul",
-          nussach: "Ashkenaz",
-          denom: "MO",
-          country: "US",
-          region: "New Jersey",
-          city: "Teaneck",
-          femLead: 1,
-          kaddishWithMen: 1,
-          kaddishAlone: 3,
-          childcare: 2,
-          rooms: [{
-            name: "Fem Lead Room 1",
-            size: 2,
-            isCentered: true,
-            isSameFloorSide: true,
-            isSameFloorBack: false,
-            isSameFloorElevated: false,
-            isSameFloorLevel: true,
-            isBalconySide: false,
-            isBalconyBack: false,
-            isOnlyMen: false,
-            isMixedSeating: false,
-            visAudScore: 3,
-          }]
-        }, {
-          include: {
-            model: Room,
-            as: "rooms"
-          }
-        })
-
+        createShul({name:"Fem Lead Shul", femLead:1})
         const options = {
           url: `${base}searchByParams`,
           form: {
