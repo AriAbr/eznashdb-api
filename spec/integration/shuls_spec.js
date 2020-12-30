@@ -7,7 +7,7 @@ const sequelize = require("../../src/db/models/index").sequelize;
 const Shul = require("../../src/db/models").Shul;
 const Room = require("../../src/db/models").Room;
 
-const {createShul, getShulData, getRoomData} = require("../utils");
+const {createShul, getSampleShulData, getSampleRoomData} = require("../utils");
 
 describe("routes : shuls", () => {
 
@@ -47,13 +47,11 @@ describe("routes : shuls", () => {
         url: `${base}create`,
         json: true,
         method: 'post',
-        body: getShulData({
+        body: {
+          ...getSampleShulData(),
           name: "Created Shul 1",
-          rooms: [
-            getRoomData({
-              name: "Created Room 1"
-            })
-          ]}),
+          rooms: [{...getSampleRoomData(), name: "Created Room 1"}]
+        },
       };
 
       it("should return a status code of 200 and create a new shul", (done) => {
@@ -83,7 +81,7 @@ describe("routes : shuls", () => {
 
       it("should not create a new shul with missing fields", (done) => {
 
-        var shulData = getShulData({name: "Created Shul 2"})
+        var shulData = {...getSampleShulData(), name: "Created Shul 2"}
         delete shulData.childcare
         const options = {
           url: `${base}create`,
@@ -104,16 +102,17 @@ describe("routes : shuls", () => {
       })
 
       it("should not create a new room with missing fields", (done) => {
-        var roomData = getRoomData({ name: "Room with no vis/aud" })
+        var roomData = {...getSampleRoomData(), name: "Room with no vis/aud" }
         delete roomData.visAudScore
         const options = {
           url: `${base}create`,
           json: true,
           method: 'post',
-          body: getShulData({
+          body: {
+            ...getSampleShulData(), 
             name: "Created Shul 1",
             rooms: [roomData]
-          }),
+          },
         };
 
         request(options,
