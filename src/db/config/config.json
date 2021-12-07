@@ -9,7 +9,10 @@
     "operatorsAliases": 0,
     "use_env_variable": "DEV_DATABASE_URL",
     "dialectOptions": {
-      "ssl": true
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
     }
   },
   "test": {
