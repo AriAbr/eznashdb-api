@@ -38,7 +38,10 @@
     "operatorsAliases": 0,
     "use_env_variable": "PROD_DATABASE_URL",
     "dialectOptions": {
-      "ssl": true
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
     }
   }
 }
