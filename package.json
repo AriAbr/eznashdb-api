@@ -14,7 +14,7 @@
     "countrycitystatejson": "^0.2.15",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
-    "express": "~4.16.1",
+    "express": "~4.17.3",
     "faker": "^4.1.0",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
